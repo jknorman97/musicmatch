@@ -9,31 +9,31 @@
             max-width: 600px;
             margin: 0 auto;
         }
-        h1 {
-            color: #333;
-        }
-        .code {
-            background: #f5f5f5;
-            padding: 10px;
-            border-radius: 4px;
-            word-break: break-all;
-        }
     </style>
 </head>
 <body>
     <h1>Authentication Complete</h1>
     <p>Redirecting back to app...</p>
+    <p id="manual-link"></p>
+    
     <script>
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
         if (code) {
-            // Attempt to redirect back to the app
-            window.location.href = `musicmatch://auth?code=${code}`;
+            const appUrl = `musicmatch://auth?code=${code}`;
             
-            // Fallback message after a short delay
+            // Try multiple approaches to redirect
+            window.location.href = appUrl;
+            window.location.replace(appUrl);
+            
+            // Create a clickable link as fallback
             setTimeout(() => {
-                document.body.innerHTML += '<p>If you are not automatically redirected, please return to the app manually.</p>';
-            }, 1500);
+                const link = document.getElementById('manual-link');
+                link.innerHTML = `<a href="${appUrl}">Click here to open the app</a> if not automatically redirected.`;
+                
+                // Try to open the app one more time
+                window.location = appUrl;
+            }, 1000);
         }
     </script>
 </body>
