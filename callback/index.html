@@ -22,14 +22,18 @@
 </head>
 <body>
     <h1>Authentication Complete</h1>
-    <p>You can close this window and return to the app.</p>
-    <div id="auth-code" class="code"></div>
+    <p>Redirecting back to app...</p>
     <script>
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
         if (code) {
-            document.getElementById('auth-code').textContent = 'Auth Code: ' + code;
-            console.log('Auth Code:', code);
+            // Attempt to redirect back to the app
+            window.location.href = `musicmatch://auth?code=${code}`;
+            
+            // Fallback message after a short delay
+            setTimeout(() => {
+                document.body.innerHTML += '<p>If you are not automatically redirected, please return to the app manually.</p>';
+            }, 1500);
         }
     </script>
 </body>
